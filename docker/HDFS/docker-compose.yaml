@@ -1,0 +1,50 @@
+services:
+
+  master:
+    image: af/hdfs
+    container_name: master
+    ports:
+      - "9870:9870"
+      - "54310:54310"
+    tty: true
+    stdin_open: true
+    depends_on:
+      - slave1
+      - slave2
+    volumes:
+      - namenode_fsimage:/tmp/hadoop-root/dfs/name
+    networks:
+      - sabd_net
+
+  slave1:
+    image: af/hdfs
+    container_name: slave1
+    ports:
+      - "9864:9864"
+    tty: true
+    stdin_open: true
+    volumes:
+      - slave1_data:/tmp/hadoop-root/dfs/data
+    networks:
+      - sabd_net
+
+  slave2:
+    image: af/hdfs
+    container_name: slave2
+    ports:
+      - "9863:9864"
+    tty: true
+    stdin_open: true
+    volumes:
+      - slave2_data:/tmp/hadoop-root/dfs/datan
+    networks:
+      - sabd_net
+
+volumes:
+    namenode_fsimage:
+    slave1_data:
+    slave2_data:
+
+networks:
+  sabd_net:
+    external: true

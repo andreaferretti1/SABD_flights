@@ -1,0 +1,28 @@
+services:
+  nifi:
+    image: af/nifi
+    build:
+      dockerfile: Dockerfile
+      context: ../..
+    container_name: nifi
+    ports:
+    - "8443:8443"
+    environment:
+      - SINGLE_USER_CREDENTIALS_USERNAME=admin
+      - SINGLE_USER_CREDENTIALS_PASSWORD=ProgettoSabd2026.
+    volumes:
+      - nifi_volume:/opt/nifi/nifi-current/conf
+    networks:
+      - sabd_net
+
+volumes:
+  nifi_volume:
+
+networks:
+  sabd_net:
+    external: true
+
+
+
+
+

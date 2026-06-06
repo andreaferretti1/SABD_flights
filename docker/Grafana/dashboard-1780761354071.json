@@ -1,0 +1,1129 @@
+{
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "admnj88",
+    "namespace": "default",
+    "uid": "cb8a7509-5c3e-4041-903d-4d4b336038a2",
+    "resourceVersion": "1780760248318000",
+    "generation": 21,
+    "creationTimestamp": "2026-06-01T09:38:07Z",
+    "labels": {
+      "grafana.app/deprecatedInternalID": "3236502832869376"
+    },
+    "annotations": {
+      "grafana.app/createdBy": "user:bfnrovzozg83kd",
+      "grafana.app/folder": "",
+      "grafana.app/saved-from-ui": "Grafana v13.0.1+security-01 (9bbe672d1)",
+      "grafana.app/updatedBy": "user:bfnrovzozg83kd",
+      "grafana.app/updatedTimestamp": "2026-06-06T15:37:28Z"
+    }
+  },
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "datasource": {
+              "name": "-- Grafana --"
+            },
+            "spec": {}
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true
+        }
+      }
+    ],
+    "cursorSync": "Off",
+    "editable": true,
+    "elements": {
+      "panel-1": {
+        "kind": "Panel",
+        "spec": {
+          "id": 1,
+          "title": "Monthly average departure delay of AA and DL airlines",
+          "description": "Questo bar chart confronta i ritardi medi tra AA e DL su base mensile.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "redis-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "cfnszfea3fnk0b"
+                      },
+                      "spec": {
+                        "command": "get",
+                        "keyName": "query1",
+                        "query": "",
+                        "type": "command"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "format": "json",
+                      "keepTime": false,
+                      "replace": false,
+                      "source": "query1"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "transpose",
+                  "spec": {
+                    "options": {
+                      "firstFieldName": "a",
+                      "restFieldsName": ""
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "format": "json",
+                      "source": "[{\"month\":1,\"airline\":\"AA\",\"dep-delay-mean\":12.89,\"dep-delay-min\":-34.0,\"dep-delay-max\":3298.0,\"cancellation-rate\":0.04},{\"month\":2,\"airline\":\"AA\",\"dep-delay-mean\":13.28,\"dep-delay-min\":-27.0,\"dep-delay-max\":3403.0,\"cancellation-rate\":0.01},{\"month\":3,\"airline\":\"AA\",\"dep-delay-mean\":15.85,\"dep-delay-min\":-27.0,\"dep-delay-max\":3288.0,\"cancellation-rate\":0.02},{\"month\":4,\"airline\":\"AA\",\"dep-delay-mean\":15.96,\"dep-delay-min\":-28.0,\"dep-delay-max\":2595.0,\"cancellation-rate\":0.01},{\"month\":1,\"airline\":\"DL\",\"dep-delay-mean\":12.83,\"dep-delay-min\":-30.0,\"dep-delay-max\":1209.0,\"cancellation-rate\":0.03},{\"month\":2,\"airline\":\"DL\",\"dep-delay-mean\":11.35,\"dep-delay-min\":-30.0,\"dep-delay-max\":1222.0,\"cancellation-rate\":0.0},{\"month\":3,\"airline\":\"DL\",\"dep-delay-mean\":10.32,\"dep-delay-min\":-32.0,\"dep-delay-max\":1176.0,\"cancellation-rate\":0.0},{\"month\":4,\"airline\":\"DL\",\"dep-delay-mean\":8.71,\"dep-delay-min\":-30.0,\"dep-delay-max\":1145.0,\"cancellation-rate\":0.01}]"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "filterFieldsByName",
+                  "spec": {
+                    "options": {
+                      "byVariable": false,
+                      "include": {
+                        "names": [
+                          "month 1",
+                          "airline",
+                          "dep-delay-mean",
+                          "month"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "groupingToMatrix",
+                  "spec": {
+                    "options": {
+                      "columnField": "airline",
+                      "rowField": "month",
+                      "valueField": "dep-delay-mean"
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "barchart",
+            "version": "13.0.1+security-01",
+            "spec": {
+              "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "colorByField": "airline",
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "right",
+                  "showLegend": true
+                },
+                "orientation": "auto",
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                },
+                "xField": "month\\airline",
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "fillOpacity": 80,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "AA"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-red",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "DL"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-green",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "transparent": true
+        }
+      },
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "id": 2,
+          "title": "Monthly cancellation rate of AA and DL airlines",
+          "description": "Questo bar chart confronta i ritardi medi tra AA e DL su base mensile.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "redis-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "cfnszfea3fnk0b"
+                      },
+                      "spec": {
+                        "command": "get",
+                        "keyName": "query1",
+                        "query": "",
+                        "type": "command"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "format": "json",
+                      "keepTime": false,
+                      "replace": false,
+                      "source": "query1"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "transpose",
+                  "spec": {
+                    "options": {
+                      "firstFieldName": "a"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "format": "json",
+                      "source": "[{\"month\":1,\"airline\":\"AA\",\"dep-delay-mean\":12.89,\"dep-delay-min\":-34.0,\"dep-delay-max\":3298.0,\"cancellation-rate\":0.04},{\"month\":2,\"airline\":\"AA\",\"dep-delay-mean\":13.28,\"dep-delay-min\":-27.0,\"dep-delay-max\":3403.0,\"cancellation-rate\":0.01},{\"month\":3,\"airline\":\"AA\",\"dep-delay-mean\":15.85,\"dep-delay-min\":-27.0,\"dep-delay-max\":3288.0,\"cancellation-rate\":0.02},{\"month\":4,\"airline\":\"AA\",\"dep-delay-mean\":15.96,\"dep-delay-min\":-28.0,\"dep-delay-max\":2595.0,\"cancellation-rate\":0.01},{\"month\":1,\"airline\":\"DL\",\"dep-delay-mean\":12.83,\"dep-delay-min\":-30.0,\"dep-delay-max\":1209.0,\"cancellation-rate\":0.03},{\"month\":2,\"airline\":\"DL\",\"dep-delay-mean\":11.35,\"dep-delay-min\":-30.0,\"dep-delay-max\":1222.0,\"cancellation-rate\":0.0},{\"month\":3,\"airline\":\"DL\",\"dep-delay-mean\":10.32,\"dep-delay-min\":-32.0,\"dep-delay-max\":1176.0,\"cancellation-rate\":0.0},{\"month\":4,\"airline\":\"DL\",\"dep-delay-mean\":8.71,\"dep-delay-min\":-30.0,\"dep-delay-max\":1145.0,\"cancellation-rate\":0.01}]"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "filterFieldsByName",
+                  "spec": {
+                    "options": {
+                      "include": {
+                        "names": [
+                          "airline",
+                          "cancellation-rate",
+                          "month"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "groupingToMatrix",
+                  "spec": {
+                    "options": {
+                      "columnField": "airline",
+                      "rowField": "month",
+                      "valueField": "cancellation-rate"
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "barchart",
+            "version": "13.0.1+security-01",
+            "spec": {
+              "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "colorByField": "None",
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "right",
+                  "showLegend": true
+                },
+                "orientation": "auto",
+                "showValue": "auto",
+                "stacking": "none",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                },
+                "xField": "month\\airline",
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "fillOpacity": 80,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "AA"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-red",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "DL"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-green",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "transparent": true
+        }
+      },
+      "panel-3": {
+        "kind": "Panel",
+        "spec": {
+          "id": 3,
+          "title": "Top 10 airlines with highest average arrival delay ",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "redis-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "cfnszfea3fnk0b"
+                      },
+                      "spec": {
+                        "command": "get",
+                        "keyName": "query2",
+                        "query": "",
+                        "type": "command"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "format": "json",
+                      "source": "query2"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "transpose",
+                  "spec": {
+                    "options": {
+                      "firstFieldName": ""
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "source": "[{\"carrier\":\"OH\",\"num_flights\":78476,\"arr_delay_mean\":17.16,\"carrier_delay_mean\":25.98,\"weather_delay_mean\":5.96,\"nas_delay_mean\":11.86,\"security_delay_mean\":0.12,\"late_aircraft_delay_mean\":43.51},{\"carrier\":\"F9\",\"num_flights\":65965,\"arr_delay_mean\":11.32,\"carrier_delay_mean\":23.05,\"weather_delay_mean\":1.91,\"nas_delay_mean\":15.36,\"security_delay_mean\":0.0,\"late_aircraft_delay_mean\":40.53},{\"carrier\":\"G4\",\"num_flights\":42596,\"arr_delay_mean\":9.54,\"carrier_delay_mean\":24.89,\"weather_delay_mean\":8.93,\"nas_delay_mean\":18.7,\"security_delay_mean\":0.68,\"late_aircraft_delay_mean\":33.02},{\"carrier\":\"AA\",\"num_flights\":302790,\"arr_delay_mean\":8.98,\"carrier_delay_mean\":27.11,\"weather_delay_mean\":4.61,\"nas_delay_mean\":13.51,\"security_delay_mean\":0.11,\"late_aircraft_delay_mean\":33.72},{\"carrier\":\"OO\",\"num_flights\":259692,\"arr_delay_mean\":7.59,\"carrier_delay_mean\":38.93,\"weather_delay_mean\":12.11,\"nas_delay_mean\":13.15,\"security_delay_mean\":0.1,\"late_aircraft_delay_mean\":16.58},{\"carrier\":\"B6\",\"num_flights\":75680,\"arr_delay_mean\":6.14,\"carrier_delay_mean\":19.44,\"weather_delay_mean\":1.88,\"nas_delay_mean\":18.64,\"security_delay_mean\":0.11,\"late_aircraft_delay_mean\":30.64},{\"carrier\":\"HA\",\"num_flights\":25707,\"arr_delay_mean\":5.81,\"carrier_delay_mean\":27.16,\"weather_delay_mean\":3.28,\"nas_delay_mean\":0.58,\"security_delay_mean\":0.15,\"late_aircraft_delay_mean\":19.99},{\"carrier\":\"MQ\",\"num_flights\":87416,\"arr_delay_mean\":5.32,\"carrier_delay_mean\":15.52,\"weather_delay_mean\":7.75,\"nas_delay_mean\":15.35,\"security_delay_mean\":0.09,\"late_aircraft_delay_mean\":25.84},{\"carrier\":\"DL\",\"num_flights\":312503,\"arr_delay_mean\":4.19,\"carrier_delay_mean\":31.19,\"weather_delay_mean\":4.75,\"nas_delay_mean\":14.85,\"security_delay_mean\":0.04,\"late_aircraft_delay_mean\":21.56},{\"carrier\":\"UA\",\"num_flights\":248433,\"arr_delay_mean\":2.46,\"carrier_delay_mean\":18.85,\"weather_delay_mean\":3.4,\"nas_delay_mean\":21.33,\"security_delay_mean\":0.0,\"late_aircraft_delay_mean\":24.93}]"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "filterFieldsByName",
+                  "spec": {
+                    "options": {
+                      "include": {
+                        "names": [
+                          "carrier",
+                          "arr_delay_mean"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "barchart",
+            "version": "13.0.1+security-01",
+            "spec": {
+              "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "right",
+                  "showLegend": true
+                },
+                "orientation": "horizontal",
+                "showValue": "never",
+                "stacking": "none",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                },
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "fillOpacity": 80,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-4": {
+        "kind": "Panel",
+        "spec": {
+          "id": 4,
+          "title": "Relative delay contributes for top 10 airlines with highest average arrival delay",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "redis-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "cfnszfea3fnk0b"
+                      },
+                      "spec": {
+                        "command": "get",
+                        "keyName": "query2",
+                        "query": "",
+                        "type": "command"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "format": "json",
+                      "source": "query2"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "transpose",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "source": "[{\"carrier\":\"OH\",\"num_flights\":78476,\"arr_delay_mean\":17.16,\"carrier_delay_mean\":25.98,\"weather_delay_mean\":5.96,\"nas_delay_mean\":11.86,\"security_delay_mean\":0.12,\"late_aircraft_delay_mean\":43.51},{\"carrier\":\"F9\",\"num_flights\":65965,\"arr_delay_mean\":11.32,\"carrier_delay_mean\":23.05,\"weather_delay_mean\":1.91,\"nas_delay_mean\":15.36,\"security_delay_mean\":0.0,\"late_aircraft_delay_mean\":40.53},{\"carrier\":\"G4\",\"num_flights\":42596,\"arr_delay_mean\":9.54,\"carrier_delay_mean\":24.89,\"weather_delay_mean\":8.93,\"nas_delay_mean\":18.7,\"security_delay_mean\":0.68,\"late_aircraft_delay_mean\":33.02},{\"carrier\":\"AA\",\"num_flights\":302790,\"arr_delay_mean\":8.98,\"carrier_delay_mean\":27.11,\"weather_delay_mean\":4.61,\"nas_delay_mean\":13.51,\"security_delay_mean\":0.11,\"late_aircraft_delay_mean\":33.72},{\"carrier\":\"OO\",\"num_flights\":259692,\"arr_delay_mean\":7.59,\"carrier_delay_mean\":38.93,\"weather_delay_mean\":12.11,\"nas_delay_mean\":13.15,\"security_delay_mean\":0.1,\"late_aircraft_delay_mean\":16.58},{\"carrier\":\"B6\",\"num_flights\":75680,\"arr_delay_mean\":6.14,\"carrier_delay_mean\":19.44,\"weather_delay_mean\":1.88,\"nas_delay_mean\":18.64,\"security_delay_mean\":0.11,\"late_aircraft_delay_mean\":30.64},{\"carrier\":\"HA\",\"num_flights\":25707,\"arr_delay_mean\":5.81,\"carrier_delay_mean\":27.16,\"weather_delay_mean\":3.28,\"nas_delay_mean\":0.58,\"security_delay_mean\":0.15,\"late_aircraft_delay_mean\":19.99},{\"carrier\":\"MQ\",\"num_flights\":87416,\"arr_delay_mean\":5.32,\"carrier_delay_mean\":15.52,\"weather_delay_mean\":7.75,\"nas_delay_mean\":15.35,\"security_delay_mean\":0.09,\"late_aircraft_delay_mean\":25.84},{\"carrier\":\"DL\",\"num_flights\":312503,\"arr_delay_mean\":4.19,\"carrier_delay_mean\":31.19,\"weather_delay_mean\":4.75,\"nas_delay_mean\":14.85,\"security_delay_mean\":0.04,\"late_aircraft_delay_mean\":21.56},{\"carrier\":\"UA\",\"num_flights\":248433,\"arr_delay_mean\":2.46,\"carrier_delay_mean\":18.85,\"weather_delay_mean\":3.4,\"nas_delay_mean\":21.33,\"security_delay_mean\":0.0,\"late_aircraft_delay_mean\":24.93}]"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "filterFieldsByName",
+                  "spec": {
+                    "options": {
+                      "include": {
+                        "names": [
+                          "carrier",
+                          "carrier_delay_mean",
+                          "weather_delay_mean",
+                          "nas_delay_mean",
+                          "security_delay_mean",
+                          "late_aircraft_delay_mean"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "barchart",
+            "version": "13.0.1+security-01",
+            "spec": {
+              "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "right",
+                  "showLegend": true
+                },
+                "orientation": "horizontal",
+                "showValue": "never",
+                "stacking": "percent",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                },
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "fillOpacity": 80,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "security_delay_mean"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-orange",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "late_aircraft_delay_mean"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-purple",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-5": {
+        "kind": "Panel",
+        "spec": {
+          "id": 5,
+          "title": "Delay contributes for top 10 airlines with highest average arrival delay",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "redis-datasource",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "cfnszfea3fnk0b"
+                      },
+                      "spec": {
+                        "command": "get",
+                        "keyName": "query2",
+                        "query": "",
+                        "type": "command"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "format": "json",
+                      "source": "query2"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "transpose",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "extractFields",
+                  "spec": {
+                    "options": {
+                      "delimiter": ",",
+                      "source": "[{\"carrier\":\"OH\",\"num_flights\":78476,\"arr_delay_mean\":17.16,\"carrier_delay_mean\":25.98,\"weather_delay_mean\":5.96,\"nas_delay_mean\":11.86,\"security_delay_mean\":0.12,\"late_aircraft_delay_mean\":43.51},{\"carrier\":\"F9\",\"num_flights\":65965,\"arr_delay_mean\":11.32,\"carrier_delay_mean\":23.05,\"weather_delay_mean\":1.91,\"nas_delay_mean\":15.36,\"security_delay_mean\":0.0,\"late_aircraft_delay_mean\":40.53},{\"carrier\":\"G4\",\"num_flights\":42596,\"arr_delay_mean\":9.54,\"carrier_delay_mean\":24.89,\"weather_delay_mean\":8.93,\"nas_delay_mean\":18.7,\"security_delay_mean\":0.68,\"late_aircraft_delay_mean\":33.02},{\"carrier\":\"AA\",\"num_flights\":302790,\"arr_delay_mean\":8.98,\"carrier_delay_mean\":27.11,\"weather_delay_mean\":4.61,\"nas_delay_mean\":13.51,\"security_delay_mean\":0.11,\"late_aircraft_delay_mean\":33.72},{\"carrier\":\"OO\",\"num_flights\":259692,\"arr_delay_mean\":7.59,\"carrier_delay_mean\":38.93,\"weather_delay_mean\":12.11,\"nas_delay_mean\":13.15,\"security_delay_mean\":0.1,\"late_aircraft_delay_mean\":16.58},{\"carrier\":\"B6\",\"num_flights\":75680,\"arr_delay_mean\":6.14,\"carrier_delay_mean\":19.44,\"weather_delay_mean\":1.88,\"nas_delay_mean\":18.64,\"security_delay_mean\":0.11,\"late_aircraft_delay_mean\":30.64},{\"carrier\":\"HA\",\"num_flights\":25707,\"arr_delay_mean\":5.81,\"carrier_delay_mean\":27.16,\"weather_delay_mean\":3.28,\"nas_delay_mean\":0.58,\"security_delay_mean\":0.15,\"late_aircraft_delay_mean\":19.99},{\"carrier\":\"MQ\",\"num_flights\":87416,\"arr_delay_mean\":5.32,\"carrier_delay_mean\":15.52,\"weather_delay_mean\":7.75,\"nas_delay_mean\":15.35,\"security_delay_mean\":0.09,\"late_aircraft_delay_mean\":25.84},{\"carrier\":\"DL\",\"num_flights\":312503,\"arr_delay_mean\":4.19,\"carrier_delay_mean\":31.19,\"weather_delay_mean\":4.75,\"nas_delay_mean\":14.85,\"security_delay_mean\":0.04,\"late_aircraft_delay_mean\":21.56},{\"carrier\":\"UA\",\"num_flights\":248433,\"arr_delay_mean\":2.46,\"carrier_delay_mean\":18.85,\"weather_delay_mean\":3.4,\"nas_delay_mean\":21.33,\"security_delay_mean\":0.0,\"late_aircraft_delay_mean\":24.93}]"
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "filterFieldsByName",
+                  "spec": {
+                    "options": {
+                      "include": {
+                        "names": [
+                          "carrier",
+                          "carrier_delay_mean",
+                          "weather_delay_mean",
+                          "nas_delay_mean",
+                          "security_delay_mean",
+                          "late_aircraft_delay_mean"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "barchart",
+            "version": "13.0.1+security-01",
+            "spec": {
+              "options": {
+                "barRadius": 0,
+                "barWidth": 0.97,
+                "fullHighlight": false,
+                "groupWidth": 0.7,
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "right",
+                  "showLegend": true
+                },
+                "orientation": "horizontal",
+                "showValue": "never",
+                "stacking": "normal",
+                "tooltip": {
+                  "hideZeros": false,
+                  "mode": "single",
+                  "sort": "none"
+                },
+                "xTickLabelRotation": 0,
+                "xTickLabelSpacing": 0
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisLabel": "",
+                    "axisPlacement": "auto",
+                    "fillOpacity": 80,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "lineWidth": 1,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "security_delay_mean"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-orange",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "late_aircraft_delay_mean"
+                    },
+                    "properties": [
+                      {
+                        "id": "color",
+                        "value": {
+                          "fixedColor": "dark-purple",
+                          "mode": "fixed"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "TabsLayout",
+      "spec": {
+        "tabs": [
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Query1",
+              "layout": {
+                "kind": "AutoGridLayout",
+                "spec": {
+                  "maxColumnCount": 3,
+                  "columnWidthMode": "standard",
+                  "rowHeightMode": "standard",
+                  "items": [
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-1"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-2"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "TabsLayoutTab",
+            "spec": {
+              "title": "Query2",
+              "layout": {
+                "kind": "AutoGridLayout",
+                "spec": {
+                  "maxColumnCount": 3,
+                  "columnWidthMode": "standard",
+                  "rowHeightMode": "standard",
+                  "items": [
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-3"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-4"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "AutoGridLayoutItem",
+                      "spec": {
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-5"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "now-6h",
+      "to": "now",
+      "autoRefresh": "",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "hideTimepicker": false,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "Progetto 1 SABD",
+    "variables": [
+      {
+        "kind": "DatasourceVariable",
+        "spec": {
+          "name": "redis_datasource",
+          "pluginId": "redis-datasource",
+          "refresh": "onDashboardLoad",
+          "regex": "",
+          "current": {
+            "text": "redis-datasource",
+            "value": "cfnszfea3fnk0b"
+          },
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "allowCustomValue": true
+        }
+      }
+    ],
+    "preferences": {
+      "layout": {
+        "kind": "GridLayout",
+        "spec": {
+          "items": []
+        }
+      }
+    }
+  }
+}

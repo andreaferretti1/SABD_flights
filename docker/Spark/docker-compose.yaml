@@ -1,0 +1,78 @@
+services:
+  spark-master:
+    image: af/spark
+    container_name: spark-master
+    user: root
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+    ports:
+      - '8080:8080'
+      - '7077:7077'
+    volumes:
+      - spark_logs:/tmp/spark-events
+    networks:
+      - sabd_net
+
+
+  spark-worker1:
+    image: af/spark
+    user: root
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    ports:
+      - "8081:8081"
+    volumes:
+      - spark_logs:/tmp/spark-events
+    networks:
+      - sabd_net
+
+
+  spark-worker2:
+    image: af/spark
+    user: root
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    ports:
+      - "8082:8081"
+    volumes:
+      - spark_logs:/tmp/spark-events
+    networks:
+      - sabd_net
+
+
+  spark-client:
+    image: af/spark
+    container_name: spark-client
+    user: root
+    depends_on:
+      - spark-master
+    entrypoint: /bin/bash
+    stdin_open: true
+    tty: true
+    ports:
+      - "4040:4040"
+    volumes:
+      - ../../scripts:/opt/spark/sabd-data
+      - spark_logs:/tmp/spark-events
+    networks:
+      - sabd_net
+
+
+  spark-history-server:
+    image: af/spark
+    container_name: spark-history-server
+    user: root
+    depends_on:
+      - spark-client
+      - spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.history.HistoryServer
+    ports:
+      - "18080:18080"
+    volumes:
+      - spark_logs:/tmp/spark-events
+    networks:
+      - sabd_net
+
+networks:
+  sabd_net:
+    external: true
+
+volumes:
+  spark_logs:
