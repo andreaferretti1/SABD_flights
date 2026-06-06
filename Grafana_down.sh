@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker compose -f ./Grafana/docker-compose.yaml down
+docker compose -f ./docker/Grafana/docker-compose.yaml down
